@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/main.baebe1e3.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
-    <link rel="stylesheet" href="/main.696ce3e5.html">
+    <link rel="stylesheet" href="/main.html">
 
     <style>@import "https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap";
 body {
@@ -136,33 +136,7 @@ a:hover {
         <button class="google-btn" id="googleSignIn">Sign In with Google</button>
     </div>
 
-    <script>// Firebase Configuration
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-// Get elements
-const errorMessage = document.getElementById('errorMessage');
-const googleSignInButton = document.getElementById('googleSignIn');
-// Handle Google Sign-In
-googleSignInButton.addEventListener('click', function() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider).then((result)=>{
-        const user = result.user;
-        console.log("Google Sign-In successful: ", user.displayName);
-        window.location.href = "index.html"; // Redirect after successful sign-in
-    }).catch((error)=>{
-        errorMessage.textContent = error.message;
-    });
-});
+    <script src="/index.6ae51636.js" defer=""></script>
 
-</script>
-
-<script src="/Bini-Habit-Tracker.3464ddca.js"></script></body>
+</body>
 </html>
