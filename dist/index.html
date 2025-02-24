@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="/main.696ce3e5.html">
+
+    <style>@import "https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap";
+body {
+  background: linear-gradient(to right, #ffdde1, #ee9ca7);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Poppins, sans-serif;
+  display: flex;
+}
+
+h1 {
+  color: #7a0b3b;
+  margin-bottom: 20px;
+  font-family: Dancing Script, cursive;
+  font-size: 3rem;
+}
+
+.container {
+  backdrop-filter: blur(10px);
+  text-align: center;
+  background: #fff3;
+  border-radius: 15px;
+  width: 350px;
+  padding: 30px;
+  box-shadow: 0 4px 10px #0000001a;
+}
+
+h2 {
+  color: #7a0b3b;
+  margin-bottom: 15px;
+  font-size: 2rem;
+}
+
+form {
+  flex-direction: column;
+  display: flex;
+}
+
+label {
+  color: #7a0b3b;
+  text-align: left;
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+input {
+  border: 2px solid #ff8ba7;
+  border-radius: 8px;
+  outline: none;
+  width: 100%;
+  margin-top: 5px;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+input:focus {
+  border-color: #c2185b;
+}
+
+button {
+  color: #fff;
+  cursor: pointer;
+  background: #c2185b;
+  border: none;
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all .3s;
+}
+
+button:hover {
+  background: #7a0b3b;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-size: .9rem;
+}
+
+p {
+  margin-top: 10px;
+  font-size: .9rem;
+}
+
+a {
+  color: #c2185b;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.google-btn {
+  color: #fff;
+  cursor: pointer;
+  background-color: #4285f4;
+  border: none;
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 15px;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all .3s;
+}
+
+.google-btn:hover {
+  background-color: #357ae8;
+}
+</style>
+</head>
+<body>
+    <h1>Welcome to Habit Tracker!!</h1>
+
+    <div class="container">
+        <h2>Sign In</h2>
+
+        <p class="error" id="errorMessage"></p>
+
+        <button class="google-btn" id="googleSignIn">Sign In with Google</button>
+    </div>
+
+    <script>// Firebase Configuration
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+// Get elements
+const errorMessage = document.getElementById('errorMessage');
+const googleSignInButton = document.getElementById('googleSignIn');
+// Handle Google Sign-In
+googleSignInButton.addEventListener('click', function() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase.auth().signInWithPopup(provider).then((result)=>{
+        const user = result.user;
+        console.log("Google Sign-In successful: ", user.displayName);
+        window.location.href = "index.html"; // Redirect after successful sign-in
+    }).catch((error)=>{
+        errorMessage.textContent = error.message;
+    });
+});
+
+</script>
+
+<script src="/Bini-Habit-Tracker.3464ddca.js"></script></body>
+</html>

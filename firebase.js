@@ -1,6 +1,7 @@
 // Import Firebase modules
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import {getFirestore} from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import {getAuth} from 'firebase/auth';
 
 // Firebase configuration (Replace with your actual Firebase config)
 const firebaseConfig = {
