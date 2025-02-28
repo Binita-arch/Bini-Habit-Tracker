@@ -1,186 +1,491 @@
-/* General styles */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap');
+
+/*======================================
+  CSS Variables & Global Settings
+======================================*/
+:root {
+  --primary: #4a90e2;
+  --primary-light: #82b1ff;
+  --secondary: #ffffff;
+  --accent: #ff6f61;
+  --accent-dark: #ff3b2d;
+  --bg-gradient: linear-gradient(135deg, #e0eafc, #cfdef3);
+  --card-bg: rgba(255, 255, 255, 0.8);
+  --blur-light: 5px;
+  --blur-medium: 8px;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
+  --transition: 0.3s;
+  --transition-fast: 0.2s;
+}
+
+/* Reset & Global Styles */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #ffebef; /* Soft pink */
-    margin: 0;
-    padding: 20px;
-    text-align: center;
+  font-family: 'Roboto', sans-serif;
+  background: var(--bg-gradient);
+  color: #333;
+  padding: 20px;
+  min-height: 100vh;
+  line-height: 1.6;
 }
 
-/* Title styling */
-h1 {
-    font-size: 4rem;
-    font-family: 'Brush Script MT', cursive;
-    text-align: left;
-    margin-left: 40px;
-    color: #c2185b; /* Elegant deep pink */
+/*======================================
+  Header & Navigation
+======================================*/
+header {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 2rem;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 30px;
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid rgba(255,255,255,0.3);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px var(--shadow);
 }
 
-/* Navigation */
 nav {
-    margin-bottom: 20px;
-    text-align: left;
-    padding-left: 40px;
+  background: rgba(74,144,226,0.9);
+  color: var(--secondary);
+  padding: 15px;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px var(--shadow);
 }
 
-nav a {
-    color: #c2185b;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: 0.3s;
+/*======================================
+  Reusable Card Component
+======================================*/
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur-medium));
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 25px var(--shadow);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px var(--shadow);
 }
 
-nav a:hover {
-    background-color: #f8bbd0; /* Light pastel pink */
-    color: #7a0b3b;
+/*======================================
+  Sign-In Section
+======================================*/
+.sign-in-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 200px);
+}
+.sign-in-container {
+  width: 400px;
+  padding: 40px;
+  text-align: center;
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur-light));
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 25px var(--shadow);
+  transition: transform var(--transition);
+}
+.sign-in-container:hover {
+  transform: translateY(-5px);
+}
+.sign-in-container h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: var(--primary);
+}
+.sign-in-container p {
+  font-size: 1rem;
+  margin-bottom: 30px;
+  color: #666;
+}
+#googleSignInBtn {
+  background: var(--primary);
+  color: var(--secondary);
+  border: none;
+  padding: 15px 30px;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+#googleSignInBtn:hover {
+  background: var(--primary-light);
+  transform: translateY(-3px);
 }
 
-/* Habit form container */
-#habit-container {
-    margin: 30px auto;
-    width: 50%;
+/*======================================
+  Book Form Section
+======================================*/
+#book-form-section {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 40px;
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur-medium));
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 25px var(--shadow);
+  transition: box-shadow var(--transition);
+}
+#book-form-section:hover {
+  box-shadow: 0 12px 30px var(--shadow);
+}
+#book-form-section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--primary);
+  text-align: center;
+}
+form input,
+form select {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #fff;
+  transition: border var(--transition), box-shadow var(--transition);
+}
+form input:focus,
+form select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+  outline: none;
+}
+form button {
+  background: linear-gradient(45deg, var(--primary), var(--primary-light));
+  color: var(--secondary);
+  border: none;
+  border-radius: 30px;
+  padding: 15px 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px var(--shadow);
 }
 
-/* Habit input form */
-#habitForm {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+/*======================================
+  Book List Section
+======================================*/
+#book-list-section {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 30px;
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur-medium));
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 25px var(--shadow);
+  transition: box-shadow var(--transition);
+}
+#book-list-section:hover {
+  box-shadow: 0 12px 30px var(--shadow);
+}
+#book-list-section h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--primary);
+  text-align: center;
+}
+ul#bookList {
+  list-style: none;
+  padding: 0;
+}
+ul#bookList li {
+  margin-bottom: 15px;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(236,240,241,0.8);
+  backdrop-filter: blur(3px);
+  transition: background var(--transition), transform 0.2s;
+}
+ul#bookList li:hover {
+  background: rgba(220,221,225,0.8);
+  transform: translateX(5px);
+}
+ul#bookList li span {
+  flex: 1;
+  font-family: 'Open Sans', sans-serif;
 }
 
-#habitInput {
-    padding: 12px;
-    border: 2px solid #c2185b;
-    border-radius: 25px;
-    width: 60%;
-    font-size: 1rem;
-    outline: none;
-    transition: 0.3s;
+/*======================================
+  Buttons: Edit & Delete
+======================================*/
+.edit-btn,
+.delete-btn {
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin: 5px;
+  color: var(--secondary);
+}
+.edit-btn {
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+}
+.edit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px var(--shadow);
+}
+.delete-btn {
+  background: linear-gradient(45deg, var(--accent), var(--accent-dark));
+}
+.delete-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px var(--shadow);
 }
 
-#habitInput:focus {
-    border-color: #7a0b3b;
-    box-shadow: 0px 0px 10px rgba(194, 24, 91, 0.4);
+/*======================================
+  Sidebar
+======================================*/
+.sidebar {
+  width: 280px;
+  margin: 40px auto;
+  padding: 30px;
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur-medium));
+  border-radius: var(--border-radius);
+  box-shadow: 0 8px 25px var(--shadow);
+  transition: transform var(--transition);
+}
+.sidebar:hover {
+  transform: translateX(3px);
+}
+.sidebar h2 {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: var(--primary);
+  text-align: center;
+}
+.sidebar select {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--secondary);
+  transition: border var(--transition), box-shadow var(--transition);
+}
+.sidebar select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 8px var(--primary);
+  outline: none;
 }
 
-/* Buttons */
-button {
-    background: #c2185b;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    cursor: pointer;
-    font-size: 1rem;
-    border-radius: 25px;
-    transition: 0.3s;
+/*======================================
+  Layout Container
+======================================*/
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+.main-content {
+  flex: 1;
+  min-width: 300px;
 }
 
-button:hover {
-    background: #7a0b3b;
+/*======================================
+  Chat Widget
+======================================*/
+#chat-widget {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 1000;
+}
+#chat-circle {
+  width: 70px;
+  height: 70px;
+  background: var(--primary);
+  border-radius: 50%;
+  color: var(--secondary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 10px 25px var(--shadow);
+  font-size: 2rem;
+  position: relative;
+  transition: transform var(--transition);
+}
+#chat-circle:hover {
+  transform: scale(1.05);
+}
+#chat-circle::after {
+  content: "";
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  animation: ripple 1.5s infinite;
+}
+@keyframes ripple {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+#chatbot-container {
+  display: none;
+  width: 350px;
+  padding: 20px;
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur-medium));
+  border-radius: var(--border-radius);
+  position: fixed;
+  bottom: 110px;
+  right: 30px;
+  box-shadow: 0 10px 25px var(--shadow);
+}
+.chat-widget-open #chatbot-container {
+  display: block;
+}
+#chatbot-header {
+  background: var(--primary);
+  color: var(--secondary);
+  padding: 15px;
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  text-align: center;
+  font-size: 1.2rem;
+}
+#chat-history {
+  height: 250px;
+  overflow-y: auto;
+  background: rgba(236,240,241,0.8);
+  backdrop-filter: blur(3px);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+#chat-input-area {
+  display: flex;
+  gap: 10px;
+}
+#chat-input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+#send-btn,
+#chat-close-btn {
+  background: var(--primary);
+  color: var(--secondary);
+  border: none;
+  padding: 12px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+#send-btn:hover,
+#chat-close-btn:hover {
+  background: var(--primary-light);
 }
 
-/* Habit list */
-#habitList {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 20px;
+/*======================================
+  Modal Styles
+======================================*/
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+}
+.modal-content {
+  max-width: 500px;
+  margin: 10% auto;
+  padding: 20px;
+  width: 90%;
+  text-align: center;
+  background: var(--card-bg);
+  backdrop-filter: blur(var(--blur-medium));
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 25px var(--shadow);
+}
+.modal-content p {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #333;
+}
+.modal-content button {
+  background: var(--primary);
+  color: var(--secondary);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background var(--transition);
+  margin: 5px;
+}
+#confirmDelete {
+  background: var(--accent-dark);
+}
+#cancelDelete {
+  background: #95a5a6;
+}
+.close-btn {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  cursor: pointer;
+  transition: color var(--transition);
+}
+.close-btn:hover {
+  color: #333;
 }
 
-#habitList li {
-    background: white;
-    padding: 15px;
-    margin: 10px auto;
-    width: 50%;
-    display: flex;
-    justify-content: space-between;
+/*======================================
+  Error Message
+======================================*/
+.error-message {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--accent-dark);
+  margin-top: 10px;
+}
+
+/*======================================
+  Responsive Styles
+======================================*/
+@media (max-width: 768px) {
+  .sign-in-container,
+  #book-form-section,
+  #book-list-section,
+  .sidebar,
+  #chatbot-container {
+    width: 90%;
+    padding: 20px;
+  }
+  .container {
+    flex-direction: column;
     align-items: center;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    transition: 0.3s;
-}
-
-#habitList li:hover {
-    transform: scale(1.02);
-}
-
-/* Habit text */
-.habit-text {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #7a0b3b;
-}
-
-/* Button container to keep buttons together */
-.button-group {
-    display: flex;
-    gap: 10px; /* Small spacing between buttons */
-}
-
-/* Buttons */
-button {
-    background: #c2185b;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    border-radius: 8px;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #7a0b3b;
-}
-
-/* Smaller buttons for Edit and Delete */
-.edit-button,
-.delete-button,
-.save-button {
-    font-size: 0.85rem;
-    padding: 6px 12px;
-}
-
-
-/* Habit text */
-.habit-text {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #7a0b3b;
-}
-
-/* QR Code and Biometrics buttons */
-#qrCode img {
-    margin-top: 15px;
-    border-radius: 10px;
-}
-
-#qrButton,
-#authButton {
-    display: block;
-    margin: 15px auto;
-}
-
-/* Message popups */
-.message {
-    background: #c2185b;
-    color: white;
-    padding: 12px 20px;
-    border-radius: 25px;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    font-weight: bold;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-    animation: fadeInOut 2s ease-in-out;
-}
-
-/* Fade animation for messages */
-@keyframes fadeInOut {
-    0% { opacity: 0; }
-    20% { opacity: 1; }
-    80% { opacity: 1; }
-    100% { opacity: 0; }
+  }
 }

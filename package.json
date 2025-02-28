@@ -4,11 +4,11 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "start": "parcel pages/index.html pages/main.html",
-    "build": "parcel build  --no-scope-hoist --dist-dir docs --public-url . pages/index.html pages/main.html",
-    "dev:build": "parcel build --dist-dir dist --no-content-hash pages/*.html",
-    "dev:run": "npm run dev:build && npm run dev:start",
-    "dev:start": "parcel serve --dist-dir dist pages/*.html",
+    "start": "parcel pages/*.html ",
+    "build": "parcel build  --dist-dir docs --public-url /Bini-Habit-Tracker/ pages/*.html ",
+    "dev:build": "parcel build --dist-dir dist --no-content-hash pages/*.html ",
+    "dev:run": "npm run dev:build && npm run dev:start ",
+    "dev:start": "parcel serve --dist-dir dist pages/*.html ",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,8 +17,6 @@
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
     "firebase": "^11.3.1",
     "firebase-admin": "^13.1.0",
     "gh-pages": "^6.3.0",
@@ -28,6 +26,7 @@
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@parcel/packager-raw-url": "^2.13.3",
+    "@parcel/transformer-js": "^2.13.3",
     "@parcel/transformer-webmanifest": "^2.13.3",
     "assert": "^2.1.0",
     "browserify-zlib": "^0.2.0",
@@ -48,4 +47,5 @@
     "util": "^0.12.5",
     "vm-browserify": "^1.1.2"
   }
+  
 }

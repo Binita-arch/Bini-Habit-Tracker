@@ -1,160 +1,168 @@
-document.addEventListener('DOMContentLoaded', function () {
-    loadHabits();
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "./firebase.js";
+import { loadBooks, initializeModals, showEditModal, showDeleteModal, addBook } from "./operations.js";
+import { filterAndDisplayBooks } from "./bookFilter.js";
+import { initializeChatbot, askChatBot, handleLocalCommands } from "./chat.js";
 
-    document.getElementById('habitForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        addHabit();
+initializeChatbot();
+
+document.addEventListener("DOMContentLoaded", () => {
+  initializeModals();
+
+  // Grab DOM elements
+  const chatHistory = document.getElementById("chat-history");
+  const chatInput = document.getElementById("chat-input");
+  const sendBtn = document.getElementById("send-btn");
+  const bookList = document.getElementById("bookList");
+  const organizeBySelect = document.getElementById("organizeBy");
+  const bookForm = document.getElementById("bookForm");
+  const searchBar = document.getElementById("searchBar");
+  const filterGenre = document.getElementById("filterGenre");
+  const chatWidget = document.getElementById("chat-widget");
+  const chatCircle = document.getElementById("chat-circle");
+  const closeBtn = document.getElementById("chat-close-btn");
+
+
+  // --- Chat UI Logic ---
+  function appendMessage(text, sender = "bot") {
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("chat-message", sender === "user" ? "user-message" : "bot-message");
+    msgDiv.textContent = text;
+    chatHistory.appendChild(msgDiv);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+  }
+
+  sendBtn.addEventListener("click", async () => {
+    const userInput = chatInput.value.trim();
+    if (!userInput) return;
+    appendMessage(userInput, "user");
+    chatInput.value = "";
+
+    const handled = await handleLocalCommands(userInput, appendMessage);
+    if (handled) return;
+
+    const botReply = await askChatBot(userInput);
+    appendMessage(botReply, "bot");
+  });
+
+  chatInput.addEventListener("keyup", (e) => {
+    if (e.key === "Enter") sendBtn.click();
+  });
+
+  // --- Book Form Logic with Validation ---
+  if (bookForm) {
+    bookForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Clear previous error messages
+      document.querySelectorAll(".error-message").forEach(msg => msg.textContent = "");
+
+      let valid = true;
+      const title = document.getElementById("title").value.trim();
+      const author = document.getElementById("author").value.trim();
+      const genre = document.getElementById("genre").value;
+      const rating = document.getElementById("rating").value.trim();
+
+      // Validate Title
+      if (!title) {
+        document.getElementById("titleError").textContent = "Title is required";
+        valid = false;
+      }
+      // Validate Author
+      if (!author) {
+        document.getElementById("authorError").textContent = "Author is required";
+        valid = false;
+      }
+      // Validate Genre
+      if (!genre) {
+        document.getElementById("genreError").textContent = "Please select a genre";
+        valid = false;
+      }
+      // Validate Rating: must be a number between 1 and 10
+      const ratingValue = parseFloat(rating);
+      if (!rating) {
+        document.getElementById("ratingError").textContent = "Rating is required";
+        valid = false;
+      } else if (isNaN(ratingValue) || ratingValue < 1 || ratingValue > 10) {
+        document.getElementById("ratingError").textContent = "Rating must be between 1 and 10";
+        valid = false;
+      }
+      
+      if (!valid) return; // Stop if validation fails
+
+      await addBook(title, author, genre, rating);
+      bookForm.reset();
     });
+  }
 
-    document.getElementById('qrButton').addEventListener('click', generateQRCode);
+  // --- Book List Logic (Edit/Delete) ---
+  bookList.addEventListener("click", (e) => {
+    if (e.target.classList.contains("edit-btn")) {
+      const bookId = e.target.getAttribute("data-id");
+      showEditModal(bookId);
+    } else if (e.target.classList.contains("delete-btn")) {
+      const bookId = e.target.getAttribute("data-id");
+      showDeleteModal(bookId);
+    }
+  });
 
-    document.getElementById('authButton').addEventListener('click', function () {
-        alert('Biometric authentication coming soon!');
+  if (organizeBySelect) {
+    organizeBySelect.addEventListener("change", () => {
+      loadBooks();
     });
-});
+  }
 
-// Load habits from localStorage
-function loadHabits() {
-    const habitList = document.getElementById('habitList');
-    habitList.innerHTML = ''; // Clear list before loading
+  // --- Filter Logic ---
+  async function applyFilters() {
+    const searchText = searchBar.value.toLowerCase();
+    const selectedGenre = filterGenre.value;
+    await filterAndDisplayBooks(searchText, selectedGenre, bookList);
+  }
 
-    const habits = JSON.parse(localStorage.getItem('habits')) || [];
+  if (searchBar) {
+    searchBar.addEventListener("input", applyFilters);
+  }
+  if (filterGenre) {
+    filterGenre.addEventListener("change", applyFilters);
+  }
 
-    if (habits.length === 0) {
-        return; // Don't display anything if no habits exist
-    }
+  // --- Chat Widget Logic ---
+  chatCircle.addEventListener("click", () => {
+    chatWidget.classList.toggle("chat-widget-open");
+  });
+  closeBtn.addEventListener("click", () => {
+    chatWidget.classList.remove("chat-widget-open");
+  });
 
-    habits.forEach((habit, index) => {
-        const li = document.createElement('li');
-
-        const habitSpan = document.createElement('span');
-        habitSpan.textContent = habit.name;
-        habitSpan.classList.add("habit-text");
-
-        const streakSpan = document.createElement('span');
-        streakSpan.textContent = `🔥 Streak: ${habit.streak} days`;
-        streakSpan.classList.add("streak");
-
-        const editButton = document.createElement('button');
-        editButton.textContent = 'Edit';
-        editButton.classList.add("edit-button");
-        editButton.onclick = function () {
-            editHabit(index, habitSpan, saveButton);
-        };
-
-        const saveButton = document.createElement('button');
-        saveButton.textContent = 'Save';
-        saveButton.classList.add("save-button", "hidden");
-        saveButton.onclick = function () {
-            saveHabit(index, habitSpan, saveButton, editButton);
-        };
-
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.classList.add("delete-button");
-        deleteButton.onclick = function () {
-            deleteHabit(index);
-        };
-
-        const checkInButton = document.createElement('button');
-        checkInButton.textContent = '✅ Check-in';
-        checkInButton.classList.add("check-in-button");
-        checkInButton.onclick = function () {
-            checkIn(index);
-        };
-
-        li.appendChild(habitSpan);
-        li.appendChild(editButton);
-        li.appendChild(saveButton);
-        li.appendChild(deleteButton);
-        li.appendChild(checkInButton);
-        li.appendChild(streakSpan);
-
-        habitList.appendChild(li);
-    });
-}
-
-// Add new habit
-function addHabit() {
-    const habitInput = document.getElementById('habitInput');
-    const habitName = habitInput.value.trim();
-
-    if (habitName === '') {
-        alert('Please enter a habit.');
-        return;
-    }
-
-    const habits = JSON.parse(localStorage.getItem('habits')) || [];
-
-    const newHabit = {
-        name: habitName,
-        streak: 0,
-        lastCheckIn: null,
-    };
-
-    habits.push(newHabit);
-    localStorage.setItem('habits', JSON.stringify(habits));
-
-    habitInput.value = '';
-    loadHabits();
-}
-
-// Edit habit
-function editHabit(index, habitSpan, saveButton) {
-    habitSpan.setAttribute('contenteditable', 'true');
-    habitSpan.focus();
-    saveButton.classList.remove("hidden");
-}
-
-// Save habit
-function saveHabit(index, habitSpan, saveButton, editButton) {
-    const habits = JSON.parse(localStorage.getItem('habits')) || [];
-    habits[index].name = habitSpan.textContent.trim();
-    localStorage.setItem('habits', JSON.stringify(habits));
-
-    habitSpan.removeAttribute('contenteditable');
-    saveButton.classList.add("hidden");
-    editButton.classList.remove("hidden");
-    loadHabits();
-}
-
-// Delete habit
-function deleteHabit(index) {
-    if (confirm('Do you want to delete this habit?')) {
-        const habits = JSON.parse(localStorage.getItem('habits')) || [];
-        habits.splice(index, 1);
-        localStorage.setItem('habits', JSON.stringify(habits));
-        loadHabits();
-    }
-}
-
-// Check-in for streak tracking
-function checkIn(index) {
-    const habits = JSON.parse(localStorage.getItem('habits')) || [];
-    const today = new Date().toDateString();
-
-    if (habits[index].lastCheckIn === today) {
-        alert('You already checked in today!');
-        return;
-    }
-
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    if (habits[index].lastCheckIn === yesterday.toDateString()) {
-        habits[index].streak += 1;
+  // --- onAuthStateChanged ---
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("User signed in:", user.email);
+      loadBooks();
     } else {
-        habits[index].streak = 1;
+      console.log("No user is signed in");
+      // Optionally redirect to the sign-in page
+      // window.location.href = "index.html";
     }
+  });
 
-    habits[index].lastCheckIn = today;
-    localStorage.setItem('habits', JSON.stringify(habits));
-    loadHabits();
-}
+  applyFilters();
 
-// Generate QR code
-function generateQRCode() {
-    document.getElementById('qrCode').innerHTML = `
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${window.location.href}" alt="QR Code">
-    `;
-}
+  // --- Sign Out Flow with Confirmation Modal ---
+  signOutBttn.addEventListener("click", () => {
+    signOutModal.style.display = "block";
+  });
+
+  confirmSignOut.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.href = "index.html";
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  });
+
+  cancelSignOut.addEventListener("click", () => {
+    signOutModal.style.display = "none";
+  });
+});
