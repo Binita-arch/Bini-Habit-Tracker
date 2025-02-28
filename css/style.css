@@ -45,11 +45,11 @@ header {
   margin-bottom: 30px;
   background: rgba(255,255,255,0.6);
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-bottom: 2px solid rgba(255,255,255,0.3);
   border-radius: var(--border-radius);
   box-shadow: 0 4px 12px var(--shadow);
 }
-
 nav {
   background: rgba(74,144,226,0.9);
   color: var(--secondary);
@@ -67,6 +67,7 @@ nav {
 .card {
   background: var(--card-bg);
   backdrop-filter: blur(var(--blur-medium));
+  -webkit-backdrop-filter: blur(var(--blur-medium));
   border-radius: var(--border-radius);
   box-shadow: 0 8px 25px var(--shadow);
   transition: transform var(--transition), box-shadow var(--transition);
@@ -91,6 +92,7 @@ nav {
   text-align: center;
   background: var(--card-bg);
   backdrop-filter: blur(var(--blur-light));
+  -webkit-backdrop-filter: blur(var(--blur-light));
   border-radius: var(--border-radius);
   box-shadow: 0 10px 25px var(--shadow);
   transition: transform var(--transition);
@@ -132,6 +134,7 @@ nav {
   padding: 40px;
   background: var(--card-bg);
   backdrop-filter: blur(var(--blur-medium));
+  -webkit-backdrop-filter: blur(var(--blur-medium));
   border-radius: var(--border-radius);
   box-shadow: 0 8px 25px var(--shadow);
   transition: box-shadow var(--transition);
@@ -186,6 +189,7 @@ form button:hover {
   padding: 30px;
   background: var(--card-bg);
   backdrop-filter: blur(var(--blur-medium));
+  -webkit-backdrop-filter: blur(var(--blur-medium));
   border-radius: var(--border-radius);
   box-shadow: 0 8px 25px var(--shadow);
   transition: box-shadow var(--transition);
@@ -212,6 +216,7 @@ ul#bookList li {
   align-items: center;
   background: rgba(236,240,241,0.8);
   backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   transition: background var(--transition), transform 0.2s;
 }
 ul#bookList li:hover {
@@ -261,6 +266,7 @@ ul#bookList li span {
   padding: 30px;
   background: var(--card-bg);
   backdrop-filter: blur(var(--blur-medium));
+  -webkit-backdrop-filter: blur(var(--blur-medium));
   border-radius: var(--border-radius);
   box-shadow: 0 8px 25px var(--shadow);
   transition: transform var(--transition);
@@ -353,6 +359,7 @@ ul#bookList li span {
   padding: 20px;
   background: var(--card-bg);
   backdrop-filter: blur(var(--blur-medium));
+  -webkit-backdrop-filter: blur(var(--blur-medium));
   border-radius: var(--border-radius);
   position: fixed;
   bottom: 110px;
@@ -376,6 +383,7 @@ ul#bookList li span {
   overflow-y: auto;
   background: rgba(236,240,241,0.8);
   backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
   padding: 15px;
   border-radius: 8px;
   margin-bottom: 15px;
@@ -427,6 +435,7 @@ ul#bookList li span {
   text-align: center;
   background: var(--card-bg);
   backdrop-filter: blur(var(--blur-medium));
+  -webkit-backdrop-filter: blur(var(--blur-medium));
   border-radius: var(--border-radius);
   box-shadow: 0 10px 25px var(--shadow);
 }
